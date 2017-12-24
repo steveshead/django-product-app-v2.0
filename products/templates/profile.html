@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %} 
+<section class="profile">
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12 text-center">
+    <h1 class="display-4">Welcome
+      {% if user.is_authenticated %}
+        {% if user.first_name and user.last_name %} {{user.first_name}} {{user.last_name}} {% else %} {{ user.username }} {% endif %}</h1>
+        <h4>{% if user.userprofile.tagline %} {{ user.userprofile.tagline }} {% else %} Products designed & created just for you. {% endif %}</h4>
+         <hr class="hr">
+    </div>
+    <div class="col-md-3 text-center">
+      {% if user.userprofile.image %}
+        <img class="img-fluid text-center mb-0" src="/product/{{ user.userprofile.image }}">
+      {% else %}
+        <img class="img-fluid text-center mb-0" src="/product/profile_image/avatar.jpg">
+      {% endif %}
+        <a href="{% url 'edit_profile' %}" class="btn btn-product mb-5 mt-3"><i class="fa fa-edit">&nbsp;</i>Edit Profile</a>
+    </div>
+    <div class="col-md-2">
+        <p><span>Name</span>:<br> {{ user.first_name }} {{ user.last_name}}</p>
+        <p><span>Username</span>:<br> {{ user.username}}</p>
+        <p><span>Date Joined</span>:<br> {{ user.date_joined|date:"m-d-Y" }}</p>
+    </div>
+    <div class="col-md-7">
+        <p><span>Biography</span>:<br> {{ user.userprofile.biography }}</p>
+          {% if user.userprofile.tagline %}
+        <p><span>Tagline</span>:<br> {{ user.userprofile.tagline }}</p>
+          {% else %}
+        <p><span>Tagline</span>:<br> <a href="{% url 'edit_profile' %}">Edit</a> your profile to add your tagline.</p>
+          {% endif %}
+    </div>
+      {% endif %}
+  </div>
+
+
+{% if products %}
+  <div class="col-md-12 text-center">
+    <h1>Your Product Designs</h1>
+    <hr class="hr">
+  </div>
+  {% else %}
+  <div class="display-none"></div>
+  {% endif %}
+
+	<div class="row text-center mb-3">
+	{% for product in products %}
+  <div class="col-md-3 product-panel">
+      <div class="hovereffect">
+          <div style="text-align:center;line-height:150%">
+              <a href="/{{product.id}}/">
+                {% if product.image %}
+								    <img class="img-fluid" src="{{ product.image.url }}" />
+								{% elif product.image_url %}
+								    <img class="img-fluid" src="{{ product.image_url }}" />
+								{% else %}
+									<img class="img-fluid" src="{% static 'images/default.jpg' %}" />
+								{% endif %}
+              </a>
+              <div class="overlay">
+                  <h2>{{ product.name }}</h2>
+                  <a class="btn btn-outline-white" href="/{{product.id}}/">PRODUCT DETAILS</a>
+              </div>
+              <h6>{{ product.name }}</h6>
+             by
+              <a href="/user/{{product.user.username}}/"> {% if product.user.first_name and product.user.last_name %} {{product.user.first_name}} {{product.user.last_name}} {% else %} {{ product.user.username }} {% endif %}</a>
+          </div>
+      </div>
+      <button id ="likes" data-id="{{product.id}}" class="btn btn-mini btn-danger" type="button">
+        {% if product.likes > 0 %} Likes: {{ product.likes }} {% else %} Likes: 0 {% endif %}
+      </button>
+  </div>
+
+	  <!-- if last column in row -->
+      {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+    </div><br><div class="row text-center mb-3">
+      {% endif %}
+	{% endfor %}
+	</div><br>
+
+</div>
+</section>
+{% endblock %}

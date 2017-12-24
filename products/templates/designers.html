@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %} 
+<section class="designers">
+  <div class="container">
+    <div class="section-heading text-center mb-5">
+      <h1 class="display-4">Product Designers</h1>
+      <p class="lead">Designers & Contibutors of eCommerce Products.</p>
+       <hr class="hr">
+     </div>
+    <div class="row">
+      <div class="col-md-7 mt-5">
+        <h2 class="mb-0">These Folks Create Stuff</h2>
+        <hr class="hr">
+
+          <!-- test columns -->
+          {% for user in object_list %}
+          <div class="row mb-3">
+
+            <div class="col-md-3">
+              <a href="/product/?username={{user.username}}">
+                {% if user.userprofile.image %}
+                  <img class="img-fluid text-center mb-0" src="/product/{{ user.userprofile.image }}">
+                {% else %}
+                  <img class="img-fluid text-center mb-0" src="/product/profile_image/avatar.jpg">
+                {% endif %}
+                <p class="text-center mt-0"><small>{% if user.first_name and user.last_name %} {{user.first_name}} {{user.last_name}} {% else %} {{ user.username }} {% endif %}</small></p>
+                </a>
+            </div>
+
+            <div class="col-md-9">
+              <h5 class="mt-1"><em><strong>Name</strong></em>:<a href="/product/?username={{user.username}}"> {% if user.first_name and user.last_name %} {{user.first_name}} {{user.last_name}} {% else %} {{ user.username }} {% endif %}</a></h5>
+              <p><em><strong>Tag</strong></em>:{% if user.userprofile.tagline %} {{ user.userprofile.tagline }} {% else %} Products designed & created just for you. {% endif %}</p>
+              <a href="/product/?username={{user.username}}" class="btn btn-product mt-2 mb-3"><i class="fa fa-eye">&nbsp;</i>Designs</a>
+            </div>
+
+          </div>
+          {% endfor %}
+          <!-- /end test columns -->
+
+      </div>
+
+      <div class="col-md-5 mt-5">
+        <div class="row">
+        <h2 class="mx-auto mb-0">Random Products</h2>
+        <hr class="hr">
+          {% for product in designer_products %}
+          <div class="col-md-6 product-panel">
+                  <div style="text-align:center;line-height:150%">
+
+                    <a href="/{{product.id}}/">
+                    {% if product.image %}
+                        <img class="img-fluid" src="{{ product.image.url }}" />
+                    {% elif product.image_url %}
+                        <img class="img-fluid" src="{{ product.image_url }}" />
+                    {% else %}
+                      <img class="img-fluid" src="{% static 'images/default.jpg' %}" />
+                    {% endif %}
+                  </a>
+
+                      <h6>{{ product.name }}</h6>
+                     by
+                      <a href="/product/?username={{product.user.username}}"> {% if product.user.first_name and product.user.last_name %} {{product.user.first_name}} {{product.user.last_name}} {% else %} {{ product.user.username }} {% endif %}</a>
+                  </div>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

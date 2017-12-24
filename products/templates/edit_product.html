@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %} 
+<section>
+<div class="container">
+  <!-- Creating a row for product cards -->
+	<div class="row text-center">
+	<!-- Looping over each product in the products list -->
+
+	</div><br>
+
+	<!-- Adding form for adding new products-->
+	<div class="row">
+	<div class="col-md-5">
+		<div class="product card card-default">
+		  <div class="card-header">
+		    <h3 class="card-title">Update Product</h3>
+		  </div>
+		  <div class="card-body">
+
+		    <form enctype="multipart/form-data" action="" method="post"  >
+		      {% csrf_token %}
+					{% include 'includes/form.html' with form=form %}
+		      <input class="btn btn-product" type="submit" value="Update" />
+		    </form>
+
+		  </div>
+		</div>
+	</div>
+
+	<div class="col-md-1"></div>
+
+	<div class="col-md-6">
+		<h2 class="mb-4">Guidelines</h2>
+		<p>Fill in the fields to upload your product details. All fields are required unless stated otherwise below.  All products are publically viewable, but can only be edited by the user that uploaded them, or a site admin in the admin panel.</p>
+		<ol>
+			<li>Images are not required to upload a product.</li>
+			<li>You can either upload an image or input a URL to add an image.</li>
+			<li>If no image is uploaded or linked, a default will be used instead.</li>
+			<li>Uploaded images have priority over URL's.</li>
+			<li>The product URL is used to link the "Purchase" button.</li>
+			<li>Visitors can view all products, but not user profiles.</li>
+			<li>Visitors can view products by user, but not user profiles.</li>
+			<li>Only the product owner can edit the product.</li>
+		</ol>
+	</div>
+
+</div>
+</div>
+</section>
+{% endblock %}

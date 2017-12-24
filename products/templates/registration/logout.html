@@ -1,0 +1,18 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Logged out" %}{% endblock %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row justify-content-md-center text-center">
+      <div class="col-md-10 vh">
+
+        <h2>{% trans "You have successfully logged out" %}.</h2>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

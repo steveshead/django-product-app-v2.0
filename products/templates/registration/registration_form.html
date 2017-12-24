@@ -1,0 +1,43 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title %}{% trans "Register for an account" %}{% endblock %}
+
+{% block content %}
+<section class="signup-form">
+  <div class="container">
+    <div class="row justify-content-md-center">
+
+      <div class="col-md-12 text-center">
+        <h1 class="display-4">Registration Form</h1>
+        <p class="lead">Please register below for a user account.</p>
+        <hr class="hr">
+     </div>
+
+      <div class="col-md-6">
+
+      <form method="post" action="">
+          {% csrf_token %}
+          {% include 'includes/form.html' with form=form %}
+          <input type="submit" class="btn btn-product mb-3" value="{% trans 'Register' %}" />
+      </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+{% comment %}
+**registration/registration_form.html**
+Used to show the form users will fill out to register. By default, has
+the following context:
+
+``form``
+    The registration form. This will be an instance of some subclass
+    of ``django.forms.Form``; consult `Django's forms documentation
+    <http://docs.djangoproject.com/en/dev/topics/forms/>`_ for
+    information on how to display this in a template.
+{% endcomment %}

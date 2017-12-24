@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %} 
+<section class="product-page">
+	<div class="container">
+		<div class="section-heading text-center">
+			<h1 class="display-4">Product Designs</h1>
+			<p class="lead">Products designed & created just for you.</p>
+			 <hr class="hr">
+			<p class=mb-0>All of these designs are available in different products, colors and sizes, for men, women and kids alike.</p>
+			<p class=mb-0>You can even customize them, adding text and images if you would like - no really, you can!</p>
+			<p>Seriously, there's no end to the fun - go take a look.</p>
+		</div>
+	  <!-- Creating a row for product cards -->
+		<div class="row text-center pt-5">
+		<!-- Looping over each product in the products list -->
+		{% for product in products %}
+				<!-- Creating a column for each product card -->
+			<div class="col-md-3 product-panel">
+			    <div class="hovereffect">
+			        <div style="text-align:center;line-height:150%">
+
+								{% if product.image %}
+								    <img class="img-fluid" src="{{ product.image.url }}" />
+								{% elif product.image_url %}
+								    <img class="img-fluid" src="{{ product.image_url }}" />
+								{% else %}
+									<img class="img-fluid" src="{% static 'images/default.jpg' %}" />
+								{% endif %}
+
+		            <div class="overlay">
+		                <h2>{{ product.name }}</h2>
+		                <a class="btn btn-outline-white" href="/{{product.id}}/">PRODUCT DETAILS</a>
+		            </div>
+			            <h6>{{ product.name }}</h6>
+			           by
+			            <a href="/product/?username={{product.user.username}}"> {% if product.user.first_name and product.user.last_name %} {{product.user.first_name}} {{product.user.last_name}} {% else %} {{ product.user.username }} {% endif %}</a>
+			        </div>
+			    </div>
+			    <button id ="likes" data-id="{{product.id}}" class="btn btn-mini btn-danger" type="button">
+			      {% if product.likes > 0 %} Likes: {{ product.likes }} {% else %} Likes: 0 {% endif %}
+			    </button>
+			</div>
+		  <!-- if last column in row -->
+	      {% if forloop.counter|divisibleby:4 and not forloop.last %}
+			</div><br><div class="row text-center">
+	      {% endif %}
+		{% endfor %}
+		</div><br>
+
+<!-- test sets -->
+
+<!-- /end test sets -->
+
+		<div class="row text-center mt-5">
+		{% if products.has_other_pages %}
+		  <ul class="pagination">
+		    {% if products.has_previous %}
+		      <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+		    {% else %}
+		      <li class="disabled page-item page-link"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in products.paginator.page_range %}
+		      {% if products.number == i %}
+		        <li class="active page-item page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if products.has_next %}
+		      <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">&raquo;</a></li>
+		    {% else %}
+		      <li class="disabled page-item page-link"><span>&raquo;</span></li>
+		    {% endif %}
+		  </ul>
+		{% endif %}
+	</div>
+
+	</section>
+
+	{% if user.is_authenticated %}
+	<!-- Adding form for adding new products-->
+		<section class="product-form">
+			<div class="container">
+		<div class="row">
+			<div class="col-md-12 mb-5">
+				<h1 class="text-center">Product Upload Form</h1>
+
+			</div>
+		<div class="col-md-5">
+			<div class="product card card-default">
+			  <div class="card-header">
+			    <h3 class="card-title mb-4">Add Product</h3>
+			  </div>
+			  <div class="card-body">
+			    <form enctype="multipart/form-data" action="post_url/" method="post" >
+			      {% csrf_token %}
+						{% include 'includes/form.html' with form=form %}
+			      <input class="btn btn-product" type="submit" value="Upload" />
+			    </form>
+			  </div>
+			</div>
+		</div>
+
+		<div class="col-md-1"></div>
+
+		<div class="col-md-6">
+			<h2 class="mb-4">Guidelines</h2>
+			<p>Fill in the fields to upload your product details. All fields are required unless stated otherwise below.  All products are publically viewable, but can only be edited by the user that uploaded them, or a site admin in the admin panel.</p>
+			<ol>
+				<li>Images are not required to upload a product.</li>
+				<li>You can either upload an image or input a URL to add an image.</li>
+				<li>If no image is uploaded or linked, a placeholder will be used.</li>
+				<li>Uploaded images have priority over URL's.</li>
+				<li>The product URL is used to link the "Purchase" button.</li>
+				<li>Product files should be zip files only.</li>
+				<li>Visitors can view all products, but not user profiles.</li>
+				<li>Visitors can view products by user, but not user profiles.</li>
+				<li>Only the product owner can edit or delete the product.</li>
+			</ol>
+		</div>
+
+	</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+{% endif %}
+
+{% endblock %}

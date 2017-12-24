@@ -1,0 +1,8 @@
+dj-database-url==0.4.2
+Django==1.11.6
+django-registration-redux==1.9
+django-widget-tweaks==1.4.1
+olefile==0.44
+Pillow==4.3.0
+python-decouple==3.1
+django-carton==1.2.1

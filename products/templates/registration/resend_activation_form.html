@@ -1,0 +1,35 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Resend Activation Email" %}{% endblock %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6 vh">
+
+        <form method="post" action="">
+            {% csrf_token %}
+            {% include 'includes/form.html' with form=form %}
+            <input type="submit" class="btn btn-product mb-3" value="{% trans 'Submit' %}" />
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+{% comment %}
+**registration/resend_activation_form.html**
+Used to show the form users will fill out to resend the activation email. By
+default, has the following context:
+
+``form``
+    The registration form. This will be an instance of some subclass
+    of ``django.forms.Form``; consult `Django's forms documentation
+    <http://docs.djangoproject.com/en/dev/topics/forms/>`_ for
+    information on how to display this in a template.
+{% endcomment %}

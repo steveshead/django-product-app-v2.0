@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %} 
+<section class="product-page">
+	<div class="container">
+		<div class="section-heading text-center">
+
+			{% if not product_list %}
+			  <div class="col-md-12 text-center">
+			    <h1>No Designs Uploaded Yet</h1>
+			  </div>
+			  {% endif %}
+
+			{% for product in product_list %}
+				{% if forloop.first %}
+					<h1 class="display-4">Products by
+						{% if product.user.first_name and product.user.last_name %}
+							{{product.user.first_name}} {{product.user.last_name}}
+						{% else %}
+							{{ product.user.username }}
+						{% endif %} </h1>
+						{% if product.user.userprofile.tagline %}
+						<h4>{{ product.user.userprofile.tagline }}</h4>
+						{% else %}
+						<p class="lead">Products designed & created just for you.</p>
+						{% endif %}
+				{% endif %}
+			{% endfor %}
+			<hr class="hr">
+
+			<p class=mb-0>All designs are available in different products, colors and sizes, for men, women and kids alike.</p>
+			<p class=mb-0>You can customize them, adding text and images if you would like - no really, you can!</p>
+			<p>Seriously, there's no end to the fun - go take a look.</p>
+		</div>
+	  <!-- Creating a row for product cards -->
+		<div class="row text-center pt-5">
+		<!-- Looping over each product in the products list -->
+		{% for product in product_list %}
+				<!-- Creating a column for each product card -->
+			<div class="col-md-3 product-panel">
+			    <div class="hovereffect">
+			        <div style="text-align:center;line-height:150%">
+
+								{% if product.image %}
+								    <img class="img-fluid" src="{{ product.image.url }}" />
+								{% elif product.image_url %}
+								    <img class="img-fluid" src="{{ product.image_url }}" />
+								{% else %}
+									<img class="img-fluid" src="{% static 'images/default.jpg' %}" />
+								{% endif %}
+
+		            <div class="overlay">
+		                <h2>{{ product.name }}</h2>
+		                <a class="btn btn-outline-white" href="/{{product.id}}/">PRODUCT DETAILS</a>
+		            </div>
+			            <h6>{{ product.name }}</h6>
+			           by
+			            <a href="?username={{product.user.username}}"> {% if product.user.first_name and product.user.last_name %} {{product.user.first_name}} {{product.user.last_name}} {% else %} {{ product.user.username }} {% endif %}</a>
+			        </div>
+			    </div>
+			    <button id ="likes" data-id="{{product.id}}" class="btn btn-mini btn-danger" type="button">
+			      {% if product.likes > 0 %} Likes: {{ product.likes }} {% else %} Likes: 0 {% endif %}
+			    </button>
+			</div>
+		  <!-- if last column in row -->
+	      {% if forloop.counter|divisibleby:4 and not forloop.last %}
+			</div><br><div class="row text-center">
+	      {% endif %}
+		{% endfor %}
+		</div><br>
+
+		</div>
+</section>
+{% endblock %}

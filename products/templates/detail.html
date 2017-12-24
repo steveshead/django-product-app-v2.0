@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% load staticfiles %} {% block content %}
+<section>
+  <div class="container">
+    <div class="row">
+
+      <div class="product card card-default product-detail">
+        <div class="card-header">
+          <h3 class="card-title"><a href="{{ product.url }}" target="_blank">{{ product.name }}</a></h3> by:
+          <a href="/product/?username={{product.user.username}}"> {% if product.user.first_name %} {{product.user.first_name}} {{product.user.last_name}}{% else %}{{ product.user.username }}{% endif %}</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 mt-2">
+
+        <div class="product-photo-detail text-center">
+          <a href="{{ product.url }}" target="_blank">
+          {% if product.image %}
+              <img class="img-fluid" src="{{ product.image.url }}" />
+          {% elif product.image_url %}
+              <img class="img-fluid" src="{{ product.image_url }}" />
+          {% else %}
+            <img class="img-fluid" src="{% static 'images/default.jpg' %}" />
+          {% endif %}
+        </a> {% if request.user == product.user %}
+          <div class="edit-btn">
+            <a href="{{ request.path }}edit" class="btn btn-product mt-3"><i class="fa fa-edit">&nbsp;</i>Edit Product</a>
+            <a href="{{ request.path }}delete" class="btn btn-product mt-3"><i class="fa fa-trash-o">&nbsp;</i>Delete Product</a>
+          </div>
+          {% endif %}
+        </div>
+
+    </div>
+
+    <div class="col-md-7 product-table mt-4">
+
+      <div class="row">
+        <div class="col-md-5 left">
+          <i class="fa fa-external-link"></i> Product Link:
+        </div>
+        <div class="col-md-7 right">
+          <a href="{{ product.url }}" target="_blank">{{ product.name }}</a>
+        </div>
+
+        <div class="col-md-5 left">
+          <i class="fa fa-file-text-o"></i> Description:
+        </div>
+        <div class="col-md-7 right">
+          <p class="font-18">{{ product.description }}</p>
+        </div>
+
+        <div class="col-md-5 left">
+          <i class="fa fa-product-hunt"></i> Product Type:
+        </div>
+        <div class="col-md-7 right">
+          {{ product.product_type }}
+        </div>
+
+        <div class="col-md-5 left">
+          <i class="fa fa-money"></i> Price:
+        </div>
+        <div class="col-md-7 right">
+          ${{ product.price }}
+        </div>
+
+        <div class="col-md-5 left">
+          <a href="{{ product.url }}" class="btn btn-product mt-3"><i class="fa fa-shopping-basket"></i>Purchase</a>
+        </div>
+        <div class="col-md-7 right">
+          <button id="likes" data-id="{{product.id}}" class="btn btn-mini btn-danger" type="button">
+            {% if product.likes > 0 %} Likes: {{ product.likes }} {% else %} Likes: 0 {% endif %}
+          </button>
+        </div>
+        {% load carton_tags %}
+        {% get_cart as cart %}
+
+        {% for item in cart.items %}
+            {{ item.product.name }}
+            {{ item.quantity }}
+            {{ item.subtotal }}
+        {% endfor %}
+
+        You can also use this convinent shortcut:
+        {% for product in cart.products %}
+            {{ product.name }}
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+</section>
+{% endblock %}

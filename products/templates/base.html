@@ -1,0 +1,192 @@
+{% load staticfiles %}
+{% url 'home' as home_url %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Product Application{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Shead">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'images/favicon/apple-icon-57x57.png' %}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'images/favicon/apple-icon-60x60.png' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/favicon/apple-icon-72x72.png' %}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/favicon/apple-icon-76x76.png' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/favicon/apple-icon-114x114.png' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'images/favicon/apple-icon-120x120.png' %}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'images/favicon/apple-icon-144x144.png' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'images/favicon/apple-icon-152x152.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-icon-180x180.png' %}">
+  <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'images/favicon/android-icon-192x192.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{% static 'images/favicon/favicon-96x96.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/favicon/manifest.json' %}">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="{% static 'images/favicon/ms-icon-144x144.png' %}">
+  <meta name="theme-color" content="#ffffff">
+
+    {% block css %}
+    <!-- Latest compiled and minified Bootstrap 4 beta CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- This file stores project-specific CSS -->
+    <link href="{% static 'css/et-font.css' %}" rel="stylesheet">
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+    {% endblock %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+
+<body>
+
+<div id="home" class="home">
+
+	<nav id="navbar-spy" class="navbar fixed-top navbar-expand-md navbar-dark bg-dark scrolling-navbar">
+	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+  <a class="navbar-brand" href="{% url 'home' %}">S2<span>DESIGN</span></a>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+        <a class="nav-link no-active" {% if request.get_full_path == home_url %}href="#home"{% else %}href="{% url 'home' %}"{% endif %}>Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'products' %}">Products</a>
+			</li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'designers' %}">Designers</a>
+      </li>
+			<li class="nav-item">
+          <a class="nav-link" {% if request.get_full_path == home_url %}href="#sec1"{% else %}style="display:none;"{% endif %}>Section 1</a>
+			</li>
+			<li class="nav-item">
+			     <a class="nav-link" {% if request.get_full_path == home_url %}href="#sec2"{% else %}style="display:none;"{% endif %}>Section 2</a>
+			</li>
+			<li class="nav-item">
+			     <a class="nav-link" {% if request.get_full_path == home_url %}href="#sec3"{% else %}style="display:none;"{% endif %}>Section 3</a>
+			</li>
+      <li class="nav-item">
+           <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+      </li>
+		</ul>
+
+		<!-- right nav -->
+		<ul class="navbar-nav navbar-right">
+			{% if user.is_authenticated %}
+					<li><a class="navbar-text navbar-right" href="{% url 'profile' user.username %}">
+            {% if user.first_name and user.last_name %} {{user.first_name}} {{user.last_name}} {% else %} {{ user.username }} {% endif %} </a></li>
+					<li><a class="navbar-text navbar-right" href="{% url 'auth_logout' %}">&nbsp;Logout </a></li>
+          <li><a class="btn btn-product" href="{% url 'shopping-cart-show' %}">Cart</a></li>
+			{% else %}
+          <li><a class="navbar-text navbar-right btn btn-product" href="/accounts/register">Signup </a></li>
+					<li><a class="navbar-text navbar-right" href="{% url 'auth_login' %}">Login </a></li>
+			{% endif %}
+		</ul>
+		<!-- /end right nav -->
+	</div>
+</nav>
+
+</div>
+
+  <main class="main">
+     {% block content %} 
+    {% endblock %}
+  </main>
+
+  <footer class="footer-bs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 footer-brand col-sm-6 col-xs-6">
+                <a href="{% url 'home' %}"><img class="img-fluid mb-3 wow fadeInDown" src="{% static 'images/logo-white.png' %}"></a>
+                <p class=" wow fadeInDown" data-wow-delay="0.2s">Suspendisse hendrerit tellus laoreet luctus pharetra. Aliquam porttitor vitae orci nec ultricies. Curabitur vehicula, libero eget faucibus faucibus, purus erat.</p>
+            </div>
+            <div class="col-md-4 footer-nav col-xs-6 col-sm-6">
+                <h4 class="wow fadeInDown" data-wow-delay="0.4s">Navigation</h4>
+                <div class="row">
+                <div class="col-md-6">
+                    <ul class="pages">
+                        <li class="wow fadeInDown" data-wow-delay="0.5s">
+                            <a href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.6s">
+                            <a href="{% url 'products' %}">Products</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.7s">
+                            <a href="{% url 'designers' %}">Designers</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.8s">
+                            <a href="{% url 'contact' %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list">
+                        <li class="wow fadeInDown" data-wow-delay="0.6s">
+                            <a href="#">About Us</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.7s">
+                            <a href="{% url 'contact' %}">Contacts</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.8s">
+                            <a href="#">Terms & Condition</a>
+                        </li>
+                        <li class="wow fadeInDown" data-wow-delay="0.9s">
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 footer-social col-xs-6 col-sm-6">
+                <h4 class="wow fadeInDown" data-wow-delay="0.6s">Social</h4>
+                <ul>
+                    <li class="wow fadeInDown" data-wow-delay="0.7s">
+                        <a href="http://www.linkedin.com/in/steveshead"><i class="fa fa-linkedin"></i>LinkedIn</a>
+                    </li>
+                    <li class="wow fadeInDown" data-wow-delay="0.8s">
+                        <a href="https://www.twitter.com/steveshead"><i class="fa fa-twitter"></i>Twitter</a>
+                    </li>
+                    <li class="wow fadeInDown" data-wow-delay="0.9s">
+                        <a href="https://www.facebook.com/steveshead"><i class="fa fa-facebook"></i>Facebook</a>
+                    </li>
+                    <li class="wow fadeInDown" data-wow-delay="1s">
+                        <a href="http://www.instagram.com/steveshead"><i class="fa fa-instagram"></i>Instagram</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 footer-ns col-sm-6 col-xs-6">
+                <h4 class="wow fadeInDown" data-wow-delay="0.6s">Newsletter</h4>
+                <p class="wow fadeInDown" data-wow-delay="0.7s">Sign up for our monthly newsletter and be the first to receive our latest and greatest news, views and ideas.</p>
+                <div class="wow fadeInDown btn btn-outline-white" data-wow-delay="0.8s">
+                    <a href="{% url 'subscribe' %}">SUBSCRIBE NOW</a>
+                </div>
+            </div>
+            <div class="col-md-12 text-center wow fadeInUp col-sm-12 col-xs-12" data-wow-delay="0.4s">
+                <p>© {% now 'Y' %} Your Company, All rights reserved</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+	<!-- Required by Bootstrap v4 beta -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

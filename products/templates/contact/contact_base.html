@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<section class="contact-app">
+  <div class="container form-box">
+    <div class="row">
+
+      <div class="col-md-5 mb-5">
+
+        <h2 class="mb-5">{% block form_heading %}{% endblock %}</h2>
+          {% block form %}
+          {% endblock %}
+      </div>
+
+      <div class="col-md-7">
+        <h2 class="mb-5">Contact Details</h2>
+        <p class="mb-4">Free free to send us a note. We will endeavor to get back to you within 24hrs. Also, we promise we will never use your email address for anything other than to chat with you, nothing more, nothing less, period, full stop - Thank uou!</p>
+        <iframe class="gmap" src="//www.google.com/maps/embed/v1/place?q=San%20Jose,California,%20USA&zoom=14&key=AIzaSyA7sJOlbThz4QfXqWrAvfwljKTwdu-5gfA" width="100%" height="350"></iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
