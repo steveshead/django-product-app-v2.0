@@ -1,5 +1,7 @@
 {% load staticfiles %}
 {% url 'home' as home_url %}
+{% load carton_tags %}
+{% get_cart as cart %}
 
 
 <!DOCTYPE html>
@@ -89,7 +91,11 @@
 					<li><a class="navbar-text navbar-right" href="{% url 'profile' user.username %}">
             {% if user.first_name and user.last_name %} {{user.first_name}} {{user.last_name}} {% else %} {{ user.username }} {% endif %} </a></li>
 					<li><a class="navbar-text navbar-right" href="{% url 'auth_logout' %}">&nbsp;Logout </a></li>
-          <li><a class="btn btn-product" href="{% url 'shopping-cart-show' %}">Cart</a></li>
+          {% if not cart.items %}
+          <div class="display-none"></div>
+          {% else %}
+          <li><a class="btn btn-sm btn-product mt-1" href="{% url 'shopping-cart-show' %}">Cart</a></li>
+          {% endif %}
 			{% else %}
           <li><a class="navbar-text navbar-right btn btn-product" href="/accounts/register">Signup </a></li>
 					<li><a class="navbar-text navbar-right" href="{% url 'auth_login' %}">Login </a></li>
