@@ -19,6 +19,12 @@ def remove(request):
     cart.remove(product)
     return redirect('shopping-cart-show')
 
+def remove_single(request):
+    cart = Cart(request.session)
+    product = Product.objects.get(pk=request.GET.get('id'))
+    cart.remove_single(product)
+    return redirect('shopping-cart-show')
+
 
 def clear(request):
     cart = Cart(request.session)

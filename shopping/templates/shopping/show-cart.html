@@ -12,6 +12,7 @@
       <div class="col-md-5">
         <h3>Placeholder Text</h3>
         <p>Convallis iaculis debitis a, nostrud commodi cumque ullamco, sollicitudin varius, facere hymenaeos eos numquam sollicitudin fugit. Enim curabitur, aliquam urna enim. Etiam phasellus nihil nesciunt molestias debitis adipiscing assumenda.</p>
+        <a href="{% url 'products' %}" class="btn btn-product">Products Page</a>
       </div>
       <div class="col-md-1"></div>
 
@@ -40,7 +41,14 @@
           <a href="/{{item.product.id}}/">{{ item.product }}</a>
         </div>
         <div class="col-md-2">
-          <p>{{ item.quantity }}</p>
+          <p>{{ item.quantity }}&nbsp;
+          <a href="/shopping-cart/add/?id={{ item.product.id }}">
+            <i class="fa fa-plus">&nbsp;</i>
+          </a>
+          <a href="/shopping-cart/remove-single/?id={{ item.product.id }}">
+            <i class="fa fa-minus"></i>
+          </a>
+          </p>
         </div>
         <div class="col-md-2">
           <p>${{ item.subtotal }}</p>
@@ -62,7 +70,7 @@
           <h4>Total: </h4>
         </div>
         <div class="col-md-1">
-          <p><strong>${{ cart.total }}</strong></p>
+          <p>${{ cart.total }}</p>
         </div>
         {% endif %}
       </div>
